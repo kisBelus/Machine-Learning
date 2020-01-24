@@ -1,0 +1,343 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "name": "HOMEWORK 1",
+      "provenance": [],
+      "authorship_tag": "ABX9TyOisitgjcxnyiI+zCO+4rMU",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/kisBelus/Machine-Learning/blob/master/HW_1\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "2oN2zFtRUtJT",
+        "colab_type": "text"
+      },
+      "source": [
+        "# Homework 1\n",
+        "Implement a python function multiply_matrices that takes as input a list of numpy arrays and outputs their product."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "2xNCqtS8VKhQ",
+        "colab_type": "text"
+      },
+      "source": [
+        "Below are the matrices and lists used to test the function.\n",
+        "\n",
+        "- *mylist1* contains only compatible matrices.\n",
+        "- *mylist2* contains one matrix that is incompatible.\n",
+        "- *mylist3* contains no matrices.\n",
+        "- *mylist4* contains not enough matrices to multiply.\n",
+        "\n",
+        "The variable *show_steps* can be set to **True** to show how all the matrices are multiplied."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "cRkeihmKKsfM",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "import numpy as np\n",
+        "\n",
+        "a1 = np.array([[1,1,1],[1,1,1],[2,2,3]])\n",
+        "a2 = np.array([[1,2,4],[1,2,5],[1,2,1]])\n",
+        "a3 = np.array([[1,2,1,1],[1,2,1,1],[1,2,1,1]])\n",
+        "a4 = np.array([[1,2],[1,2],[1,4],[2,2]])\n",
+        "a5 = np.array([[5,2],[3,4]])\n",
+        "a6 = np.array([[-1,0],[0,-1]])\n",
+        "a7 = np.array([[1],[0]])\n",
+        "a8 = np.array([[1,1,1,1],[1,1,1,1],[1,1,1,1]])\n",
+        "\n",
+        "mylist1 = a1, a2, a3, a4, a5, a6, a7\n",
+        "mylist2 = a1, a2, a3, a4, a5, a6, a7, a8\n",
+        "mylist3 = np.array([])\n",
+        "mylist4 = a1\n",
+        "\n",
+        "show_steps = False"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "r2Tmg8DPZVBf",
+        "colab_type": "text"
+      },
+      "source": [
+        "# **multiply_matrices**:\n",
+        "\n",
+        "Takes in a list of numpy arrays that represent our matrices and outputs their product. In the case of an empty list or incompatible matrices, it will stop and let the user know what the problem was. \n",
+        "\n",
+        "**Compatible Matrix Example:**\n",
+        "\n",
+        "$\n",
+        "A = \\begin{bmatrix}\n",
+        "2&3&1\\\\\n",
+        "6&1&2\\\\\n",
+        "\\end{bmatrix} $\n",
+        "\n",
+        "$\n",
+        "B = \\begin{bmatrix}\n",
+        "4&5\\\\\n",
+        "3&0\\\\\n",
+        "1&2\\\\\n",
+        "\\end{bmatrix}\n",
+        "$\n",
+        "\n",
+        "$A \\times B =\n",
+        "\\begin{bmatrix}\n",
+        "2&3&1\\\\\n",
+        "6&1&2\\\\\n",
+        "\\end{bmatrix} \n",
+        "$\n",
+        "$\n",
+        "\\times\n",
+        "\\begin{bmatrix}\n",
+        "4&5\\\\\n",
+        "3&0\\\\\n",
+        "1&2\\\\\n",
+        "\\end{bmatrix} = \\begin{bmatrix} 18&12\\\\ 29&34\\\\ \\end{bmatrix}\n",
+        "$\n",
+        "\n",
+        "Notice the number of columns in ***A*** equals the number of rows in ***B***"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "Emh-TGOVLVZt",
+        "colab_type": "code",
+        "colab": {}
+      },
+      "source": [
+        "def multiply_matrices(m_list):\n",
+        "  \n",
+        "  if len(m_list) == 0:\n",
+        "    print()\n",
+        "    print(\"List Empty!\")\n",
+        "    return\n",
+        "\n",
+        "  m_answer = m_list[0]\n",
+        "\n",
+        "  for x in m_list[1:]:\n",
+        "    m_next = x\n",
+        "    m_current = m_answer\n",
+        "\n",
+        "    try:\n",
+        "      m_next.shape[0]\n",
+        "      m_current.shape[1]\n",
+        "    except IndexError:\n",
+        "      print(\"Need more Matrices in list.\")\n",
+        "      return\n",
+        "    \n",
+        "    if m_current.shape[1] != m_next.shape[0]:\n",
+        "      print(\"-------------ERROR-----------\")\n",
+        "      print(\"Matrices are not Compatible!\\n\")\n",
+        "      print(\"Matrix A: \\n\", m_current)\n",
+        "      print()\n",
+        "      print(\"Matrix B: \\n\", m_next)\n",
+        "      print(\"\\nMatrix A has\",m_current.shape[1],\"columns and Matrix B has\",m_next.shape[0],\"rows.\")\n",
+        "      print(\"-----------------------------\")\n",
+        "      return\n",
+        "\n",
+        "    m_answer = m_current.dot(m_next)\n",
+        "    if show_steps == True:\n",
+        "      print(\"A:\\n\",m_current)\n",
+        "      print(\"B:\\n\",m_next)\n",
+        "      print(\"AxB:\\n\",m_answer)\n",
+        "      print()\n",
+        "\n",
+        "  print(\"\\nSolution:\\n\",m_answer)"
+      ],
+      "execution_count": 0,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "LEwxrqVbaOwo",
+        "colab_type": "text"
+      },
+      "source": [
+        "# **Example 1:** Succesful Multiplication"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "KmhCTufdMVY4",
+        "colab_type": "code",
+        "outputId": "58f86795-31d7-4cf3-90ff-407bd6e58a5d",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 101
+        }
+      },
+      "source": [
+        "show_steps = False\n",
+        "multiply_matrices(mylist1)\n"
+      ],
+      "execution_count": 50,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "\n",
+            "Solution:\n",
+            " [[-1254]\n",
+            " [-1254]\n",
+            " [-2772]]\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "OPmgkx2IaiI3",
+        "colab_type": "text"
+      },
+      "source": [
+        "# **Example 2:** Incompatible Matrices"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "DwgeZPXIUChY",
+        "colab_type": "code",
+        "outputId": "afac0716-a4ca-492c-a573-885e921826b9",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 269
+        }
+      },
+      "source": [
+        "show_steps = False\n",
+        "multiply_matrices(mylist2)\n"
+      ],
+      "execution_count": 46,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "-------------ERROR-----------\n",
+            "Matrices are not Compatible!\n",
+            "\n",
+            "Matrix A: \n",
+            " [[-1254]\n",
+            " [-1254]\n",
+            " [-2772]]\n",
+            "\n",
+            "Matrix B: \n",
+            " [[1 1 1 1]\n",
+            " [1 1 1 1]\n",
+            " [1 1 1 1]]\n",
+            "\n",
+            "Matrix A has 1 columns and Matrix B has 3 rows.\n",
+            "-----------------------------\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "ODu7aN7saqgP",
+        "colab_type": "text"
+      },
+      "source": [
+        "## **Example 3:** Empty List"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "1aTRZc0TUFjW",
+        "colab_type": "code",
+        "outputId": "1595e100-9611-42a6-ae7d-68a1f3b79788",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 50
+        }
+      },
+      "source": [
+        "show_steps = False\n",
+        "multiply_matrices(mylist3)"
+      ],
+      "execution_count": 38,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "\n",
+            "List Empty!\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "vpKso1LYeybL",
+        "colab_type": "text"
+      },
+      "source": [
+        "# **Example 4:** Not enough Matrices to Multiply"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "id": "jBqiD9CLe-mL",
+        "colab_type": "code",
+        "outputId": "3ba0ca19-2ad7-4a72-dad9-23b7b146f755",
+        "colab": {
+          "base_uri": "https://localhost:8080/",
+          "height": 34
+        }
+      },
+      "source": [
+        "show_steps = False\n",
+        "multiply_matrices(mylist4)"
+      ],
+      "execution_count": 39,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "text": [
+            "Need more Matrices in list.\n"
+          ],
+          "name": "stdout"
+        }
+      ]
+    }
+  ]
+}
